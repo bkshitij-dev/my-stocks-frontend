@@ -5,11 +5,14 @@ import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation'
 
+import ShareHistoryAggregated from '../components/share-history-aggregated';
+import ShareSummary from '../components/share-summary';
+
 const MyShares = () => {
 
   const [currentScripts, setCurrentScripts] = useState<ShareDetail[] | null>(null);
   const [pastScripts, setPastScripts] = useState<ShareDetail[] | null>(null);
-  const [expandedRows, setExpandedRows] = useState<string | null>(null);
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AppError | null>(null);
 
@@ -40,13 +43,13 @@ const MyShares = () => {
   }, []);
 
   const handleExpandRow = (symbol: string) => {
-    let currentExpandedRows = null;
-    const isRowExpanded = currentExpandedRows === symbol ? symbol : null;
-    const newExpandedRows = isRowExpanded ? null : (currentExpandedRows = symbol);
-    if (expandedRows !== symbol) {
-      setExpandedRows(newExpandedRows);
+    let currentExpandedRow = null;
+    const isRowExpanded = currentExpandedRow === symbol ? symbol : null;
+    const newExpandedRow = isRowExpanded ? null : (currentExpandedRow = symbol);
+    if (expandedRow !== symbol) {
+      setExpandedRow(newExpandedRow);
     } else {
-      setExpandedRows(null);
+      setExpandedRow(null);
     }
   };
 
@@ -66,8 +69,7 @@ const MyShares = () => {
           <button
             type="button"
             className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-            onClick={() => router.push('/')}
-          >
+            onClick={() => router.push('/')}>
             Add new transaction
           </button>
         </div>
@@ -79,28 +81,16 @@ const MyShares = () => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th
-                      scope="col"
-                      className="px-4 py-3.5 text-left text-sm font-normal text-gray-700"
-                    >
+                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                       <span>Scripts</span>
                     </th>
-                    <th
-                      scope="col"
-                      className="px-12 py-3.5 text-left text-sm font-normal text-gray-700"
-                    >
+                    <th scope="col" className="px-12 py-3.5 text-left text-sm font-normal text-gray-700">
                       Current Quantity
                     </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3.5 text-left text-sm font-normal text-gray-700"
-                    >
+                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                       Current Investment
                     </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3.5 text-left text-sm font-normal text-gray-700"
-                    >
+                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                       Price Per Share
                     </th>
                     <th scope="col" className="relative px-4 py-3.5">
@@ -109,106 +99,8 @@ const MyShares = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  <tr className="border-t border-gray-200">
-                    <th
-                      colSpan={5}
-                      scope="col"
-                      className="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-500">
-                      Current Scripts
-                    </th>
-                  </tr>
-                  {currentScripts && currentScripts.map(script => (
-                    <Fragment key={script.symbol}>
-                      <tr onClick={() => handleExpandRow(script.symbol)}>
-                        <td className="whitespace-nowrap px-4 py-4">
-                          <div className="text-sm font-medium text-gray-900">
-                            {script.symbol}
-                          </div>
-                        </td>
-                        <td className="whitespace-nowrap px-12 py-4">
-                          <div className="text-sm text-gray-900 ">{script.currentQuantity}</div>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-4">
-                          <div className="text-sm text-gray-900 ">{script.currentInvestment}</div>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
-                          <div className="text-sm text-gray-900 ">{script.pricePerShare}</div>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
-                          <a href="#" className="text-gray-700">
-                            Edit
-                          </a>
-                        </td>
-                      </tr>
-                      {expandedRows === script.symbol ? (
-                        <tr key={`${script.symbol}-expand`} className="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-500">
-                          <td colSpan={5} className="collaps-viewer">
-                            <div className="flex space-x-6 pl-4 py-4">
-                              <div className="flex-1">
-                                <div className="font-semibold">Total Buy Quantity</div>
-                                <div className="text-sm text-gray-900">{script.totalBuyQuantity}</div>
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-semibold">Total Sell Quantity</div>
-                                <div className="text-sm text-gray-900">{script.totalSellQuantity}</div>
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-semibold">Total Buy Amount</div>
-                                <div className="text-sm text-gray-900">{script.totalBuy}</div>
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-semibold">Total Sell Amount</div>
-                                <div className="text-sm text-gray-900">{script.totalSell}</div>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      ) : null}
-                    </Fragment>
-                  ))}
-                  <tr className="border-t border-gray-200">
-                    <th
-                      colSpan={5}
-                      scope="col"
-                      className="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-500">
-                      Past Scripts
-                    </th>
-                  </tr>
-                  {pastScripts && pastScripts.map(script => (
-                    <Fragment key={script.symbol}>
-                      <tr onClick={() => handleExpandRow(script.symbol)}>
-                        <td className="whitespace-nowrap px-4 py-4">
-                          <div className="text-sm font-medium text-gray-900">
-                            {script.symbol}
-                          </div>
-                        </td>
-                        <td className="whitespace-nowrap px-12 py-4">
-                          <div className="text-sm text-gray-900 ">{script.currentQuantity}</div>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-4">
-                          <div className="text-sm text-gray-900 ">{script.currentInvestment}</div>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
-                          <div className="text-sm text-gray-900 ">{script.pricePerShare}</div>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
-                          <a href="#" className="text-gray-700">
-                            Edit
-                          </a>
-                        </td>
-                      </tr>
-                      {expandedRows === script.symbol ? (
-                        <tr key={`${script.symbol}-expand`} className="bg-gray-50">
-                          <td colSpan={5} className="collaps-viewer">
-                            <div>Total Buy Quantity: {script.totalBuyQuantity}</div>
-                            <div>Total Sell Quantity: {script.totalSellQuantity}</div>
-                            <div>Total Buy Amount: {script.totalBuy}</div>
-                            <div>Total Sell Amount: {script.totalSell}</div>
-                          </td>
-                        </tr>
-                      ) : null}
-                    </Fragment>
-                  ))}
+                  <ShareSummary title="Current Scripts" scripts={currentScripts} expandedRow={expandedRow} handleExpandRow={handleExpandRow} />
+                  <ShareSummary title="Past Scripts" scripts={pastScripts} expandedRow={expandedRow} handleExpandRow={handleExpandRow} />
                 </tbody>
               </table>
             </div>
