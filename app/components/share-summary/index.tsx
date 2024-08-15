@@ -17,7 +17,6 @@ const ShareSummary = (
     }
 
     return (
-        // 783,476.3
         <>
             <tr className="border-t border-gray-200">
                 <th

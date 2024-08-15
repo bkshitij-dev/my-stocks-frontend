@@ -12,10 +12,16 @@ const MyShares = () => {
   const [currentScripts, setCurrentScripts] = useState<ShareDetail[] | null>(null);
   const [pastScripts, setPastScripts] = useState<ShareDetail[] | null>(null);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [totalInvestment, setTotalInvestment] = useState<number>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AppError | null>(null);
 
   const router = useRouter();
+
+  let NPRFormat = new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'NPR',
+});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +33,10 @@ const MyShares = () => {
         const result: ShareDetail[] = await response.json();
         setCurrentScripts(result.filter(r => r.currentQuantity > 0));
         setPastScripts(result.filter(r => r.currentQuantity === 0));
+        const totalCurrentInvestment = result.reduce((accumulator, currentItem) => {
+          return accumulator + currentItem.currentInvestment;
+        }, 0);
+        setTotalInvestment(totalCurrentInvestment);
       } catch (error) {
         if (error instanceof Error) {
           setError({ message: error.message });
@@ -60,8 +70,8 @@ const MyShares = () => {
       <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
         <div>
           <h2 className="text-lg font-semibold">My Shares</h2>
-          <p className="mt-1 text-sm text-gray-700">
-            This is a list of all your share holdings
+          <p className="mt-1 text-lg text-gray-700">
+            Current Investment: {totalInvestment && NPRFormat.format(totalInvestment)}
           </p>
         </div>
         <div>
