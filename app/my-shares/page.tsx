@@ -1,11 +1,10 @@
 "use client";
 
-import React, { Fragment } from 'react'
+import React from 'react'
 import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation'
 
-import ShareHistoryAggregated from '../components/share-history-aggregated';
 import ShareSummary from '../components/share-summary';
 
 const MyShares = () => {
@@ -84,7 +83,7 @@ const MyShares = () => {
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                       <span>Scripts</span>
                     </th>
-                    <th scope="col" className="px-12 py-3.5 text-left text-sm font-normal text-gray-700">
+                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                       Current Quantity
                     </th>
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
@@ -92,6 +91,12 @@ const MyShares = () => {
                     </th>
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                       Price Per Share
+                    </th>
+                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
+                      LTP
+                    </th>
+                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
+                      Target
                     </th>
                     <th scope="col" className="relative px-4 py-3.5">
                       <span className="sr-only">Edit</span>

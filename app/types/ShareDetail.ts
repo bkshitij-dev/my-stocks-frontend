@@ -7,4 +7,6 @@ type ShareDetail = {
     currentQuantity: number;
     currentInvestment: number;
     pricePerShare: number;
+    ltp: number,
+    target: number;
 }

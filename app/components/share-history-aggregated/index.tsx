@@ -5,7 +5,7 @@ const ShareHistoryAggregated = ({expandedRow, script}: {expandedRow: string | nu
         <>
             {expandedRow === script.symbol ? (
                 <tr key={`${script.symbol}-expand`} className="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-500">
-                    <td colSpan={5} className="collaps-viewer">
+                    <td colSpan={7} className="collaps-viewer">
                         <div className="flex space-x-6 pl-4 py-4">
                             <div className="flex-1">
                                 <div className="font-semibold">Total Buy Quantity</div>
