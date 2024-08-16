@@ -4,10 +4,10 @@ import { SyntheticEvent, useState } from "react";
 
 export default function Home() {
 
-  const [formData, setFormData] = useState<ShareTransaction>({
-    scriptSymbol: '',
+  const [formData, setFormData] = useState<StockTransaction>({
+    scrip: '',
     transactionType: "BUY",
-    shareType: "IPO",
+    stockType: "IPO",
     quantity: 0,
     rate: 0 
   });
@@ -31,7 +31,7 @@ export default function Home() {
 
   const handleSubmit = async(e: SyntheticEvent) => {
     e.preventDefault();
-    await fetch("http://localhost:8080/api/v1/script-transactions", {
+    await fetch("http://localhost:8080/api/v1/stock-transactions", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -40,9 +40,9 @@ export default function Home() {
     });
     setSubmitted(true);
     setFormData({
-      scriptSymbol: '',
+      scrip: '',
       transactionType: "BUY",
-      shareType: "IPO",
+      stockType: "IPO",
       quantity: 0,
       rate: 0 
     });
@@ -63,8 +63,8 @@ export default function Home() {
         <input
           className="border-2 border-gray-400 rounded-lg p-2 m-2"
           type="text"
-          name="scriptSymbol"
-          value={formData.scriptSymbol}
+          name="scrip"
+          value={formData.scrip}
           placeholder='Enter the script symbol'
           onChange={handleChange}
         />
@@ -78,8 +78,8 @@ export default function Home() {
         </select>
         <label className="text-xl font-bold">Share Type</label>
         <select className="border-2 border-gray-400 rounded-lg p-2 m-2" 
-                name="shareType"
-                value={formData.shareType} 
+                name="stockType"
+                value={formData.stockType} 
                 onChange={handleChange}>
           <option value="IPO">IPO</option>
           <option value="SECONDARY">Secondary</option>

@@ -1,12 +1,12 @@
-type ShareDetail = {
-    symbol: string;
+type StockDetail = {
+    scrip: string;
     totalBuyQuantity: number;
     totalSellQuantity: number;
     totalBuy: number;
     totalSell: number;
     currentQuantity: number;
     currentInvestment: number;
-    pricePerShare: number;
+    wacc: number;
     ltp: number,
     target: number;
 }

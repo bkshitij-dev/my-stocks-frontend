@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation'
 
-import ShareSummary from '../components/share-summary';
+import ShareSummary from '../components/stock-summary';
 
-const MyShares = () => {
+const MyStocks = () => {
 
-  const [currentScripts, setCurrentScripts] = useState<ShareDetail[] | null>(null);
-  const [pastScripts, setPastScripts] = useState<ShareDetail[] | null>(null);
+  const [currentStocks, setCurrentStocks] = useState<StockDetail[] | null>(null);
+  const [pastStocks, setPastStocks] = useState<StockDetail[] | null>(null);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [totalInvestment, setTotalInvestment] = useState<number>();
   const [loading, setLoading] = useState(true);
@@ -26,13 +26,13 @@ const MyShares = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/v1/script-transactions/scripts');
+        const response = await fetch('http://localhost:8080/api/v1/stock-transactions/stocks');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const result: ShareDetail[] = await response.json();
-        setCurrentScripts(result.filter(r => r.currentQuantity > 0));
-        setPastScripts(result.filter(r => r.currentQuantity === 0));
+        const result: StockDetail[] = await response.json();
+        setCurrentStocks(result.filter(r => r.currentQuantity > 0));
+        setPastStocks(result.filter(r => r.currentQuantity === 0));
         const totalCurrentInvestment = result.reduce((accumulator, currentItem) => {
           return accumulator + currentItem.currentInvestment;
         }, 0);
@@ -51,11 +51,11 @@ const MyShares = () => {
     fetchData();
   }, []);
 
-  const handleExpandRow = (symbol: string) => {
+  const handleExpandRow = (scrip: string) => {
     let currentExpandedRow = null;
-    const isRowExpanded = currentExpandedRow === symbol ? symbol : null;
-    const newExpandedRow = isRowExpanded ? null : (currentExpandedRow = symbol);
-    if (expandedRow !== symbol) {
+    const isRowExpanded = currentExpandedRow === scrip ? scrip : null;
+    const newExpandedRow = isRowExpanded ? null : (currentExpandedRow = scrip);
+    if (expandedRow !== scrip) {
       setExpandedRow(newExpandedRow);
     } else {
       setExpandedRow(null);
@@ -69,7 +69,7 @@ const MyShares = () => {
     <section className="mx-auto w-full max-w-7xl px-4 py-4">
       <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
         <div>
-          <h2 className="text-lg font-semibold">My Shares</h2>
+          <h2 className="text-lg font-semibold">My Stocks</h2>
           <p className="mt-1 text-lg text-gray-700">
             Current Investment: {totalInvestment && NPRFormat.format(totalInvestment)}
           </p>
@@ -79,7 +79,7 @@ const MyShares = () => {
             type="button"
             className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             onClick={() => router.push('/')}>
-            Add new transaction
+            Add New Transaction
           </button>
         </div>
       </div>
@@ -91,7 +91,7 @@ const MyShares = () => {
                 <thead className="bg-gray-50">
                   <tr>
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
-                      <span>Scripts</span>
+                      <span>Scrip</span>
                     </th>
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                       Current Quantity
@@ -100,7 +100,7 @@ const MyShares = () => {
                       Current Investment
                     </th>
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
-                      Price Per Share
+                      WACC
                     </th>
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                       LTP
@@ -114,8 +114,8 @@ const MyShares = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  <ShareSummary title="Current Scripts" scripts={currentScripts} expandedRow={expandedRow} handleExpandRow={handleExpandRow} />
-                  <ShareSummary title="Past Scripts" scripts={pastScripts} expandedRow={expandedRow} handleExpandRow={handleExpandRow} />
+                  <ShareSummary title="Current Stocks" stocks={currentStocks} expandedRow={expandedRow} handleExpandRow={handleExpandRow} />
+                  <ShareSummary title="Past Stocks" stocks={pastStocks} expandedRow={expandedRow} handleExpandRow={handleExpandRow} />
                 </tbody>
               </table>
             </div>
@@ -127,4 +127,4 @@ const MyShares = () => {
   )
 }
 
-export default MyShares
+export default MyStocks

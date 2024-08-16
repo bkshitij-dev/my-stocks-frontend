@@ -3,23 +3,23 @@
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
-const ShareDetails = () => {
+const StockDetails = () => {
     const params = useParams();
-    const symbol = params.symbol as string;
+    const scrip = params.scrip as string;
     const router = useRouter();
 
-    const [transactions, setTransactions] = useState<ShareTransaction[] | null>(null);
+    const [transactions, setTransactions] = useState<StockTransaction[] | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<AppError | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/v1/script-transactions/scripts/${symbol}`);
+                const response = await fetch(`http://localhost:8080/api/v1/stock-transactions/stocks/${scrip}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                const result: ShareTransaction[] = await response.json();
+                const result: StockTransaction[] = await response.json();
                 setTransactions(result);
             } catch (error) {
                 if (error instanceof Error) {
@@ -42,14 +42,14 @@ const ShareDetails = () => {
         <section className="mx-auto w-full max-w-7xl px-4 py-4">
             <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
                 <div>
-                    <h2 className="text-lg font-semibold">Transactions for {symbol}</h2>
+                    <h2 className="text-lg font-semibold">Transactions for {scrip}</h2>
                 </div>
                 <div>
                     <button
                         type="button"
                         className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                        onClick={() => router.push('/my-shares')}>
-                        Back to My Shares
+                        onClick={() => router.push('/my-stocks')}>
+                        Back to My Stocks
                     </button>
                 </div>
             </div>
@@ -67,7 +67,7 @@ const ShareDetails = () => {
                                             Transaction Type
                                         </th>
                                         <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
-                                            Share Type
+                                            Stock Type
                                         </th>
                                         <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                                             Quantity
@@ -83,7 +83,7 @@ const ShareDetails = () => {
                                 <tbody className="divide-y divide-gray-200 bg-white">
 
                                     {transactions && transactions.map((transaction, idx) => (
-                                        <tr key={transaction.scriptSymbol}>
+                                        <tr key={transaction.scrip}>
                                             <td className="whitespace-nowrap px-4 py-4">
                                                 <div className="text-sm font-medium text-gray-600">
                                                     {idx + 1}
@@ -93,7 +93,7 @@ const ShareDetails = () => {
                                                 <div className="text-sm text-gray-900 ">{transaction.transactionType}</div>
                                             </td>
                                             <td className="whitespace-nowrap px-4 py-4">
-                                                <div className="text-sm text-gray-900 ">{transaction.shareType}</div>
+                                                <div className="text-sm text-gray-900 ">{transaction.stockType}</div>
                                             </td>
                                             <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
                                                 <div className="text-sm text-gray-900 ">{transaction.quantity}</div>
@@ -114,4 +114,4 @@ const ShareDetails = () => {
     );
 };
 
-export default ShareDetails;
+export default StockDetails;
