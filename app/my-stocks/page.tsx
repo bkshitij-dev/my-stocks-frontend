@@ -26,13 +26,13 @@ const MyStocks = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/v1/stock-transactions/stocks');
+        const response = await fetch('http://localhost:8080/api/v1/stock-holdings');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const result: StockDetail[] = await response.json();
-        setCurrentStocks(result.filter(r => r.currentQuantity > 0));
-        setPastStocks(result.filter(r => r.currentQuantity === 0));
+        setCurrentStocks(result.filter(r => r.holdingQuantity > 0));
+        setPastStocks(result.filter(r => r.holdingQuantity === 0));
         const totalCurrentInvestment = result.reduce((accumulator, currentItem) => {
           return accumulator + currentItem.currentInvestment;
         }, 0);
@@ -101,12 +101,6 @@ const MyStocks = () => {
                     </th>
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                       WACC
-                    </th>
-                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
-                      LTP
-                    </th>
-                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
-                      Target
                     </th>
                     <th scope="col" className="relative px-4 py-3.5">
                       <span className="sr-only">Edit</span>

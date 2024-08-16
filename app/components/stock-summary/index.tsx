@@ -35,19 +35,13 @@ const StockSummary = (
                             </div>
                         </td>
                         <td className="whitespace-nowrap px-4 py-4">
-                            <div className="text-sm text-gray-900 ">{stock.currentQuantity}</div>
+                            <div className="text-sm text-gray-900 ">{stock.holdingQuantity}</div>
                         </td>
                         <td className="whitespace-nowrap px-4 py-4">
                             <div className="text-sm text-gray-900 ">{stock.currentInvestment}</div>
                         </td>
                         <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
                             <div className="text-sm text-gray-900 ">{stock.wacc}</div>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
-                            <div className="text-sm text-gray-900 ">{stock.ltp}</div>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
-                            <div className="text-sm text-gray-900 ">{stock.target}</div>
                         </td>
                         <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
                             <a href="#" className="text-gray-700" onClick={(e) => viewStock(e, stock.scrip)}>

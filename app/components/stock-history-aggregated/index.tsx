@@ -17,11 +17,11 @@ const StockHistoryAggregated = ({expandedRow, stock}: {expandedRow: string | nul
                             </div>
                             <div className="flex-1">
                                 <div className="font-semibold">Total Buy Amount</div>
-                                <div className="text-sm text-gray-900">{stock.totalBuy}</div>
+                                <div className="text-sm text-gray-900">{stock.totalBuyAmount}</div>
                             </div>
                             <div className="flex-1">
                                 <div className="font-semibold">Total Sell Amount</div>
-                                <div className="text-sm text-gray-900">{stock.totalSell}</div>
+                                <div className="text-sm text-gray-900">{stock.totalSellAmount}</div>
                             </div>
                         </div>
                     </td>
