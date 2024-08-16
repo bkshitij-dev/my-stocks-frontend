@@ -102,8 +102,7 @@ const MyStocks = () => {
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                       WACC
                     </th>
-                    <th scope="col" className="relative px-4 py-3.5">
-                      <span className="sr-only">Edit</span>
+                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                     </th>
                   </tr>
                 </thead>

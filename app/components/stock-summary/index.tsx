@@ -20,7 +20,7 @@ const StockSummary = (
         <>
             <tr className="border-t border-gray-200">
                 <th
-                    colSpan={7}
+                    colSpan={5}
                     scope="col"
                     className="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-medium text-black-800">
                     {title}
@@ -45,9 +45,9 @@ const StockSummary = (
                         </td>
                         <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
                             <a href="#" className="text-gray-700" onClick={(e) => viewStock(e, stock.scrip)}>
-                                <svg className="w-[20px] h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" strokeWidth="1.5" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                    <path stroke="currentColor" strokeWidth="1.5" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
                             </a>
                         </td>
