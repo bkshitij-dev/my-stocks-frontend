@@ -10,6 +10,7 @@ import ShareSummary from '../components/stock-summary';
 const MyStocks = () => {
 
   const [currentStocks, setCurrentStocks] = useState<StockDetail[] | null>(null);
+  const [zeroInvestmentStocks, setZeroInvestmentStocks] = useState<StockDetail[] | null>(null);
   const [pastStocks, setPastStocks] = useState<StockDetail[] | null>(null);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [totalInvestment, setTotalInvestment] = useState<number>();
@@ -21,7 +22,7 @@ const MyStocks = () => {
   let NPRFormat = new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'NPR',
-});
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +32,8 @@ const MyStocks = () => {
           throw new Error('Network response was not ok');
         }
         const result: StockDetail[] = await response.json();
-        setCurrentStocks(result.filter(r => r.holdingQuantity > 0));
+        setCurrentStocks(result.filter(r => r.holdingQuantity > 0 && r.wacc > 0));
+        setZeroInvestmentStocks(result.filter(r => r.holdingQuantity > 0 && r.wacc === 0));
         setPastStocks(result.filter(r => r.holdingQuantity === 0));
         const totalCurrentInvestment = result.reduce((accumulator, currentItem) => {
           return accumulator + currentItem.currentInvestment;
@@ -108,6 +110,7 @@ const MyStocks = () => {
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                   <ShareSummary title="Current Stocks" stocks={currentStocks} expandedRow={expandedRow} handleExpandRow={handleExpandRow} />
+                  <ShareSummary title="Zero Investment Stocks" stocks={zeroInvestmentStocks} expandedRow={expandedRow} handleExpandRow={handleExpandRow} />
                   <ShareSummary title="Past Stocks" stocks={pastStocks} expandedRow={expandedRow} handleExpandRow={handleExpandRow} />
                 </tbody>
               </table>

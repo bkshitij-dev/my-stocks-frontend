@@ -1,11 +1,12 @@
 "use client";
 
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useState, useEffect } from "react";
+import TypeaheadDropdown from "./components/typeahead-dropdown";
 
 export default function Home() {
 
   const [formData, setFormData] = useState<StockTransaction>({
-    scrip: '',
+    companyId: 0,
     transactionType: "BUY",
     stockType: "IPO",
     quantity: 0,
@@ -40,7 +41,7 @@ export default function Home() {
     });
     setSubmitted(true);
     setFormData({
-      scrip: '',
+      companyId: 0,
       transactionType: "BUY",
       stockType: "IPO",
       quantity: 0,
@@ -60,14 +61,8 @@ export default function Home() {
       <h1 className="text-4xl font-bold">Add Transaction</h1>
       <form className="flex flex-col items-center justify-center" onSubmit={handleSubmit}>
         <label className="text-xl font-bold">Name</label>
-        <input
-          className="border-2 border-gray-400 rounded-lg p-2 m-2"
-          type="text"
-          name="scrip"
-          value={formData.scrip}
-          placeholder='Enter the script symbol'
-          onChange={handleChange}
-        />
+        <TypeaheadDropdown value={formData.companyId} 
+          callback={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)} />
         <label className="text-xl font-bold">Transaction Type</label>
         <select className="border-2 border-gray-400 rounded-lg p-2 m-2" 
                 name="transactionType"

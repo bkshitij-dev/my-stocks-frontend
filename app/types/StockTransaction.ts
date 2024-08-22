@@ -1,5 +1,5 @@
 type StockTransaction = {
-    scrip: string;
+    companyId: number;
     transactionType: string;
     stockType: string;
     quantity: number;
