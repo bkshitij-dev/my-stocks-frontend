@@ -26,7 +26,7 @@ export default function TypeaheadDropdown({ value, callback }: { value: number, 
     useEffect(() => {
         setFilteredOptions(
             options.filter((option) =>
-                option.scrip.toLowerCase().includes(query.toLowerCase())
+                option.scrip.toLowerCase().startsWith(query.toLowerCase())
             )
         );
     }, [query, options]);
@@ -38,7 +38,7 @@ export default function TypeaheadDropdown({ value, callback }: { value: number, 
 
     const handleOptionClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, id: number, scrip: string) => {
         setQuery(scrip);
-        callback({target: {name: "companyId", value: id} });
+        callback({ target: { name: "companyId", value: id } });
         setShowDropdown(false);
     };
 
@@ -54,7 +54,7 @@ export default function TypeaheadDropdown({ value, callback }: { value: number, 
             <input
                 type="text"
                 name="companyId"
-                className="border-2 border-gray-400 rounded-lg p-2 m-2"
+                className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Search scrip"
                 value={query}
                 onChange={(e) => handleOnChange(e)}
