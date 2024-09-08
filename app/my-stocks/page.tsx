@@ -14,6 +14,7 @@ const MyStocks = () => {
   const [pastStocks, setPastStocks] = useState<StockDetail[] | null>(null);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [totalInvestment, setTotalInvestment] = useState<number>();
+  const [totalValue, setTotalValue] = useState<number>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AppError | null>(null);
 
@@ -39,6 +40,10 @@ const MyStocks = () => {
           return accumulator + currentItem.currentInvestment;
         }, 0);
         setTotalInvestment(totalCurrentInvestment);
+        const totalCurrentValue = result.reduce((accumulator, currentItem) => {
+          return accumulator + currentItem.currentValue;
+        }, 0);
+        setTotalValue(totalCurrentValue);
       } catch (error) {
         if (error instanceof Error) {
           setError({ message: error.message });
@@ -75,12 +80,26 @@ const MyStocks = () => {
           <p className="mt-1 text-lg text-gray-700">
             Current Investment: {totalInvestment && NPRFormat.format(totalInvestment)}
           </p>
+          <p className="mt-1 text-lg text-gray-700">
+            Current Value: {totalValue && NPRFormat.format(totalValue)}
+          </p>
+          <p className="mt-1 text-lg text-gray-700">
+            {
+              totalValue && totalInvestment && (totalValue - totalInvestment) > 0 &&
+              <span className="text-green-500">Profit: + {NPRFormat.format(totalValue - totalInvestment)}</span>
+            }
+
+            {
+              totalValue && totalInvestment && (totalValue - totalInvestment) < 0 &&
+              <span className="text-red-500">Loss: {NPRFormat.format(Math.abs(totalValue - totalInvestment))}</span>
+            }
+          </p>
         </div>
         <div>
           <button
             type="button"
             className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-            onClick={() => router.push('/')}>
+            onClick={() => router.push('/transactions')}>
             Add New Transaction
           </button>
         </div>

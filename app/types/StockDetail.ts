@@ -7,4 +7,5 @@ type StockDetail = {
     holdingQuantity: number;
     currentInvestment: number;
     wacc: number;
+    currentValue: number;
 }
