@@ -5,6 +5,7 @@ import { MarketData } from "./types/MarketData";
 import LatestStockData from "./components/latest-stock-data";
 import Table from "./components/table";
 import { StockData } from "./types/StockData";
+import { ApiResponse } from "./types/ApiResponse";
 
 export default function Home() {
 
@@ -25,7 +26,8 @@ export default function Home() {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const result: MarketData = await response.json();
+        const apiResponse: ApiResponse = await response.json();
+        const result: MarketData = apiResponse.data;
         setMarketData(result);
         setPaginatedData(result.stocks.slice(0, ITEMS_PER_PAGE));
       } catch (error) {
