@@ -69,7 +69,7 @@ export default function Home() {
     setQuery(e.target.value);
   }
 
-  const getTextColorByPercentageChange = () => {
+  const getTextColorByPointsChange = () => {
     if (marketData == null) {
       return '';
     }
@@ -121,11 +121,13 @@ export default function Home() {
 
                 <div className="flex items-center bg-white border border-gray-300 rounded-lg p-4">
                   <div className="mr-4 text-lg font-semibold">
-                    NEPSE Index: <span className={getTextColorByPercentageChange()}>{marketData?.index}</span>
+                    NEPSE Index: <span className={getTextColorByPointsChange()}>{marketData?.index}</span>
                   </div>
-                  <div className={`text-lg font-semibold flex ${getTextColorByPercentageChange()}`}>
-                    {marketData.percentageChange > 0 ? <><UpArrow /> {`+`} </> : <DownArrow />}
-                    {marketData.percentageChange}%
+                  <div className={`text-lg font-semibold flex ${getTextColorByPointsChange()}`}>
+                    {marketData.pointsChange > 0 ? <><UpArrow /> {`+`} </> 
+                      : marketData.pointsChange < 0 ? <DownArrow />
+                      : <></>}
+                    {marketData.pointsChange} ({marketData.percentageChange}%)
                   </div>
                 </div>
               </div>
