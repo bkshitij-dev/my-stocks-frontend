@@ -3,9 +3,11 @@ import TableHeader from '../table-header'
 import TableData from '../table-rows'
 import ClientSidePagination from '../client-side-pagination'
 
-const Table = ({headers, rows, data, paginate, itemsPerPage, setPaginatedRows}: 
-    {headers: string[], rows: React.ReactNode, data: any[], paginate: boolean, 
-        itemsPerPage: number, setPaginatedRows: Function}) => {
+const Table = ({ headers, rows, data, paginate, itemsPerPage, setPaginatedRows }:
+    {
+        headers: string[], rows: React.ReactNode, data: any[] | undefined, paginate: boolean,
+        itemsPerPage: number, setPaginatedRows: Function
+    }) => {
 
     return (
         <div className="mt-6 flex flex-col">
@@ -16,9 +18,9 @@ const Table = ({headers, rows, data, paginate, itemsPerPage, setPaginatedRows}:
                             <TableHeader headers={headers} />
                             <TableData rows={rows} />
                         </table>
-                        {paginate && <ClientSidePagination data={data} 
+                        {data && paginate && <ClientSidePagination data={data}
                             itemsPerPage={itemsPerPage}
-                            setCurrentData={setPaginatedRows}/>}
+                            setCurrentData={setPaginatedRows} />}
                     </div>
                 </div>
             </div>

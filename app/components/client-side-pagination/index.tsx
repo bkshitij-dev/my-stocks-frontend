@@ -48,11 +48,11 @@ const ClientSidePagination = ({ data, itemsPerPage, setCurrentData }:
                 </>
             }
 
-            {(currentPage == totalPages) &&
+            {(currentPage == totalPages) && (totalPages > 2) &&
                 <PaginationButton pageNumber={currentPage - 2} isCurrent={false} goToPageNumber={goToPageNumber} />
             }
 
-            {(currentPage > 1) &&
+            {(currentPage > 1) && 
                 <PaginationButton pageNumber={currentPage - 1} isCurrent={false} goToPageNumber={goToPageNumber} />
             }
 
@@ -63,7 +63,7 @@ const ClientSidePagination = ({ data, itemsPerPage, setCurrentData }:
                 <PaginationButton pageNumber={currentPage + 1} isCurrent={false} goToPageNumber={goToPageNumber} />
             }
 
-            {(currentPage == 1) &&
+            {(currentPage == 1) && (totalPages > 2) &&
                 <PaginationButton pageNumber={currentPage + 2} isCurrent={false} goToPageNumber={goToPageNumber} />
             }
             {(currentPage <= (totalPages-2)) &&
