@@ -28,29 +28,32 @@ export default function Home() {
 
   const headers: string[] = ["Scrip", "LTP", "Points Changed", "Percentage Changed", "Open", "High", "Low"];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/api/v1/stock-market-history/current-data');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const apiResponse: ApiResponse = await response.json();
-        const result: MarketData = apiResponse.data;
-        setMarketData(result);
-        setPaginatedData(result.stocks.slice(0, ITEMS_PER_PAGE));
-      } catch (error) {
-        if (error instanceof Error) {
-          setError({ message: error.message });
-        } else {
-          setError({ message: 'An unknown error occurred' });
-        }
-      } finally {
-        setLoading(false);
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/stock-market-history/current-data');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    };
+      const apiResponse: ApiResponse = await response.json();
+      const result: MarketData = apiResponse.data;
+      setMarketData(result);
+      setPaginatedData(result.stocks.slice(0, ITEMS_PER_PAGE));
+    } catch (error) {
+      if (error instanceof Error) {
+        setError({ message: error.message });
+      } else {
+        setError({ message: 'An unknown error occurred' });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchData();
+  useEffect(() => {
+    // Set up the interval
+    const intervalId = setInterval(fetchData, 60000);
+    // Clean up the interval on component unmount or effect change
+    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
