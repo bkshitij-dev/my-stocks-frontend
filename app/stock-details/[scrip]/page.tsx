@@ -1,5 +1,6 @@
 'use client';
 
+import { ApiResponse } from '@/app/types/ApiResponse';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
@@ -19,7 +20,8 @@ const StockDetails = () => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                const result: StockTransaction[] = await response.json();
+                const apiResponse: ApiResponse = await response.json();
+                const result: StockTransaction[] = apiResponse.data;
                 setTransactions(result);
             } catch (error) {
                 if (error instanceof Error) {
@@ -83,7 +85,7 @@ const StockDetails = () => {
                                 <tbody className="divide-y divide-gray-200 bg-white">
 
                                     {transactions && transactions.map((transaction, idx) => (
-                                        <tr key={transaction.scrip}>
+                                        <tr key={transaction.companyId}>
                                             <td className="whitespace-nowrap px-4 py-4">
                                                 <div className="text-sm font-medium text-gray-600">
                                                     {idx + 1}

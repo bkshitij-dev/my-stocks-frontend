@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation'
 
 import ShareSummary from '../components/stock-summary';
+import { ApiResponse } from '../types/ApiResponse';
 
 const MyStocks = () => {
 
@@ -32,7 +33,8 @@ const MyStocks = () => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const result: StockDetail[] = await response.json();
+        const apiResponse: ApiResponse = await response.json();
+        const result: StockDetail[] = apiResponse.data;
         setCurrentStocks(result.filter(r => r.holdingQuantity > 0 && r.wacc > 0));
         setZeroInvestmentStocks(result.filter(r => r.holdingQuantity > 0 && r.wacc === 0));
         setPastStocks(result.filter(r => r.holdingQuantity === 0));

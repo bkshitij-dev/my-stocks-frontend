@@ -50,6 +50,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    fetchData();
     // Set up the interval
     const intervalId = setInterval(fetchData, 60000);
     // Clean up the interval on component unmount or effect change
