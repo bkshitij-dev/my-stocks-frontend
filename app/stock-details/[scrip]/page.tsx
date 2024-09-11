@@ -11,7 +11,7 @@ const StockDetails = () => {
     const router = useRouter();
 
     const [transactions, setTransactions] = useState<StockTransaction[] | null>(null);
-    const [recentData, setRecentData] = useState<StockRecentData[] | null>(null);
+    const [recentData, setRecentData] = useState<MarketRecentData[] | null>(null);
     const [minValue, setMinValue] = useState(Infinity);
     const [maxValue, setMaxValue] = useState(-Infinity);
     const [loading, setLoading] = useState(true);
@@ -44,13 +44,13 @@ const StockDetails = () => {
                 throw new Error('Network response was not ok');
             }
             const apiResponse: ApiResponse = await response.json();
-            const result: StockRecentData[] = apiResponse.data;
+            const result: MarketRecentData[] = apiResponse.data;
             setRecentData(result);
 
-            const { min, max } = result.reduce((acc, { ltp }) => {
+            const { min, max } = result.reduce((acc, { index }) => {
                 return {
-                    min: Math.min(acc.min, ltp),
-                    max: Math.max(acc.max, ltp)
+                    min: Math.min(acc.min, index),
+                    max: Math.max(acc.max, index)
                 };
             }, { min: minValue, max: maxValue });
 

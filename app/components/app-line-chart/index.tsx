@@ -51,7 +51,7 @@ const AppLineChart = ({ data, min, max, title }: { data: any[], min: number, max
           />
           <Line
             type="monotone"
-            dataKey="ltp"
+            dataKey="index"
             strokeWidth={5}
           />
         </LineChart>

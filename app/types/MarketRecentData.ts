@@ -1,5 +1,5 @@
-type StockRecentData = {
+type MarketRecentData = {
     date: string;
-    ltp: number;
+    index: number;
     pointsChange: number; 
 }

@@ -13,6 +13,7 @@ import { MarketData } from "./types/MarketData";
 import { StockData } from "./types/StockData";
 import UpArrow from './components/icons/up-arrow';
 import DownArrow from './components/icons/down-arrow';
+import AppLineChart from './components/app-line-chart';
 
 export default function Home() {
 
@@ -23,6 +24,9 @@ export default function Home() {
   const [marketData, setMarketData] = useState<MarketData>();
   const [paginatedData, setPaginatedData] = useState<StockData[]>();
   const [query, setQuery] = useState('');
+  const [recentData, setRecentData] = useState<MarketRecentData[] | null>(null);
+  const [minValue, setMinValue] = useState(Infinity);
+  const [maxValue, setMaxValue] = useState(-Infinity);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AppError | null>(null);
 
@@ -49,10 +53,42 @@ export default function Home() {
     }
   };
 
+  const fetchRecentData = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/stock-market-history/recent-data');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const apiResponse: ApiResponse = await response.json();
+      const result: MarketRecentData[] = apiResponse.data;
+      setRecentData(result);
+
+      const { min, max } = result.reduce((acc, { index }) => {
+        return {
+          min: Math.min(acc.min, index),
+          max: Math.max(acc.max, index)
+        };
+      }, { min: minValue, max: maxValue });
+
+      setMinValue(min);
+      setMaxValue(max);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError({ message: error.message });
+      } else {
+        setError({ message: 'An unknown error occurred' });
+      }
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    fetchRecentData();
     // Set up the interval
-    const intervalId = setInterval(fetchData, 60000);
+    const intervalId = setInterval(() => {
+      fetchData();
+      fetchRecentData();
+    }, 60000);
     // Clean up the interval on component unmount or effect change
     return () => clearInterval(intervalId);
   }, []);
@@ -112,15 +148,17 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <div className="mx-auto max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
         {loading && <p className="text-center">Loading...</p>}
         {error && <p>Error: {error.message}</p>}
-        {marketData &&
+        {marketData && (
           <>
             <div className="flex items-end justify-between p-4 bg-gray-100">
               <div className="flex flex-col">
                 <div className="text-sm text-gray-600 mb-2">
-                  <small><strong>Last updated on:</strong> {marketData?.date} {marketData?.time}</small>
+                  <small>
+                    <strong>Last updated on:</strong> {marketData?.date} {marketData?.time}
+                  </small>
                 </div>
 
                 <div className="flex items-center bg-white border border-gray-300 rounded-lg p-4">
@@ -128,9 +166,15 @@ export default function Home() {
                     NEPSE Index: <span className={getTextColorByPointsChange()}>{marketData?.index}</span>
                   </div>
                   <div className={`text-lg font-semibold flex ${getTextColorByPointsChange()}`}>
-                    {marketData.pointsChange > 0 ? <><UpArrow /> {`+`} </> 
-                      : marketData.pointsChange < 0 ? <DownArrow />
-                      : <></>}
+                    {marketData.pointsChange > 0 ? (
+                      <>
+                        <UpArrow /> {`+`}{" "}
+                      </>
+                    ) : marketData.pointsChange < 0 ? (
+                      <DownArrow />
+                    ) : (
+                      <></>
+                    )}
                     {marketData.pointsChange} ({marketData.percentageChange}%)
                   </div>
                 </div>
@@ -146,13 +190,29 @@ export default function Home() {
               />
             </div>
 
-            <Table headers={headers} rows={paginatedData && paginatedData.map(stock => (
-              <LatestStockData stock={stock} key={stock.scrip} />
-            ))}
-              data={getFilteredData()} paginate={true} itemsPerPage={ITEMS_PER_PAGE}
-              setPaginatedRows={setPaginatedData} />
+            <div className="flex flex-wrap gap-4">
+              {recentData && (
+                <div className="flex-1 h-[500px]">
+                  <AppLineChart data={recentData} min={minValue} max={maxValue} title="Recent Data" />
+                </div>
+              )}
+
+              <div className="flex-1">
+                <Table
+                  headers={headers}
+                  rows={
+                    paginatedData &&
+                    paginatedData.map((stock) => <LatestStockData stock={stock} key={stock.scrip} />)
+                  }
+                  data={getFilteredData()}
+                  paginate={true}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  setPaginatedRows={setPaginatedData}
+                />
+              </div>
+            </div>
           </>
-        }
+        )}
       </div>
     </div>
   )
