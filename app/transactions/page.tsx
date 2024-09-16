@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import ToastContent from "../components/toast-content";
 import TypeaheadDropdown from "../components/typeahead-dropdown";
 
+import stockTransactionService from "../services/stockTransactionService";
+
 export default function Home() {
 
   const [formData, setFormData] = useState<StockTransaction>({
@@ -45,18 +47,7 @@ export default function Home() {
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/api/v1/stock-transactions", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
+      const response = await stockTransactionService.postTransaction(formData);
       setSubmitted(true);
       resetForm();
       toast.custom((t) => (

@@ -1,28 +1,27 @@
 import { useState, useEffect } from 'react';
 
+import companyService from '@/app/services/companyService';
+
 export default function TypeaheadDropdown({ value, callback }: { value: number, callback: Function }) {
     const [query, setQuery] = useState('');
     const [options, setOptions] = useState<Company[]>([]);
     const [filteredOptions, setFilteredOptions] = useState<Company[]>([]);
     const [showDropdown, setShowDropdown] = useState(false);
 
-    // Function to fetch data asynchronously
     const fetchData = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/v1/companies');
-            const data = await response.json();
+            const response = await companyService.getCompanies();
+            const data = await response.data;
             setOptions(data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
-    // Fetch data when the component mounts
     useEffect(() => {
         fetchData();
     }, []);
 
-    // Filter options based on the query
     useEffect(() => {
         setFilteredOptions(
             options.filter((option) =>

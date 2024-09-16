@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation'
 import ShareSummary from '../components/stock-summary';
 import { ApiResponse } from '../types/ApiResponse';
 
+import stockHoldingService from '../services/stockHoldingService';
+
 const MyStocks = () => {
 
   const [currentStocks, setCurrentStocks] = useState<StockDetail[] | null>(null);
@@ -29,11 +31,7 @@ const MyStocks = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/v1/stock-holdings');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const apiResponse: ApiResponse = await response.json();
+        const apiResponse: ApiResponse = await stockHoldingService.getStockHoldings();
         const result: StockDetail[] = apiResponse.data;
         setCurrentStocks(result.filter(r => r.holdingQuantity > 0 && r.wacc > 0));
         setZeroInvestmentStocks(result.filter(r => r.holdingQuantity > 0 && r.wacc === 0));

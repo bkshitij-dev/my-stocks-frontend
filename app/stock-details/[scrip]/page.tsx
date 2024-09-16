@@ -5,6 +5,8 @@ import { ApiResponse } from '@/app/types/ApiResponse';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
+import stockHistoryService from '@/app/services/stockHistoryService';
+
 const StockDetails = () => {
     const params = useParams();
     const scrip = params.scrip as string;
@@ -17,11 +19,7 @@ const StockDetails = () => {
 
     const fetchRecentData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/stock-history/scrip/${scrip}`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const apiResponse: ApiResponse = await response.json();
+            const apiResponse: ApiResponse = await stockHistoryService.getRecentDataForScrip(scrip);
             const result: MarketRecentData[] = apiResponse.data;
             setRecentData(result);
 

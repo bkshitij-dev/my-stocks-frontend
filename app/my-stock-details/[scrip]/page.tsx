@@ -5,6 +5,9 @@ import { ApiResponse } from '@/app/types/ApiResponse';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
+import stockTransactionService from '@/app/services/stockTransactionService';
+import stockHistoryService from '@/app/services/stockHistoryService';
+
 const MyStockDetails = () => {
     const params = useParams();
     const scrip = params.scrip as string;
@@ -19,11 +22,7 @@ const MyStockDetails = () => {
 
     const fetchTransactions = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/stock-transactions/stocks/${scrip}`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const apiResponse: ApiResponse = await response.json();
+            const apiResponse: ApiResponse = await stockTransactionService.getTransactions(scrip);
             const result: StockTransaction[] = apiResponse.data;
             setTransactions(result);
         } catch (error) {
@@ -39,11 +38,7 @@ const MyStockDetails = () => {
 
     const fetchRecentData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/stock-history/scrip/${scrip}`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const apiResponse: ApiResponse = await response.json();
+            const apiResponse: ApiResponse = await stockHistoryService.getRecentDataForScrip(scrip);
             const result: MarketRecentData[] = apiResponse.data;
             setRecentData(result);
 

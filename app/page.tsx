@@ -15,6 +15,8 @@ import UpArrow from './components/icons/up-arrow';
 import DownArrow from './components/icons/down-arrow';
 import AppLineChart from './components/app-line-chart';
 
+import stockMarketHistoryService from './services/stockMarketHistoryService';
+
 export default function Home() {
 
   const router = useRouter();
@@ -34,15 +36,12 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/stock-market-history/current-data');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const apiResponse: ApiResponse = await response.json();
+      const apiResponse: ApiResponse = await stockMarketHistoryService.getCurrentData();
       const result: MarketData = apiResponse.data;
       setMarketData(result);
       setPaginatedData(result.stocks.slice(0, ITEMS_PER_PAGE));
     } catch (error) {
+      console.log(error);
       if (error instanceof Error) {
         setError({ message: error.message });
       } else {
@@ -55,11 +54,7 @@ export default function Home() {
 
   const fetchRecentData = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/stock-market-history/recent-data');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const apiResponse: ApiResponse = await response.json();
+      const apiResponse: ApiResponse = await stockMarketHistoryService.getRecentData();
       const result: MarketRecentData[] = apiResponse.data;
       setRecentData(result);
 
