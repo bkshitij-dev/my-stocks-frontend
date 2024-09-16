@@ -1,5 +1,7 @@
-import { StockData } from '@/app/types/StockData'
 import React from 'react'
+import Link from 'next/link'
+import { StockData } from '@/app/types/StockData'
+
 
 const LatestStockData = ({stock}: {stock: StockData}) => {
   const tdCss = "whitespace-nowrap px-4 py-4";
@@ -17,7 +19,7 @@ const LatestStockData = ({stock}: {stock: StockData}) => {
     <tr key={stock.scrip}>
       <td className={tdCss}>
         <div className={divCss}>
-          {stock.scrip}
+          <Link href={`/stock-details/${stock.scrip}`}>{stock.scrip}</Link>
         </div>
       </td>
       <td className={tdCss}>
