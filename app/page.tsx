@@ -30,7 +30,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AppError | null>(null);
 
-  const headers: string[] = ["Scrip", "LTP", "Points Changed", "Percentage Changed", "Open", "High", "Low"];
+  const headers: string[] = ["Scrip", "LTP", "Points +/-", "% +/-", "Open", "High", "Low"];
 
   const fetchData = async () => {
     try {
