@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import TableHeader from '../table-header'
 import TableData from '../table-rows'
 import ClientSidePagination from '../client-side-pagination'
 
 const Table = ({ headers, rows, data, paginate, itemsPerPage, setPaginatedRows }:
     {
-        headers: string[], rows: React.ReactNode, data: any[] | undefined, paginate: boolean,
-        itemsPerPage: number, setPaginatedRows: Function
+        headers: string[], rows: React.ReactNode, data?: any[] | undefined, paginate?: boolean,
+        itemsPerPage?: number | undefined, setPaginatedRows?: Function | undefined
     }) => {
 
     return (
@@ -18,7 +18,7 @@ const Table = ({ headers, rows, data, paginate, itemsPerPage, setPaginatedRows }
                             <TableHeader headers={headers} />
                             <TableData rows={rows} />
                         </table>
-                        {data && paginate && <ClientSidePagination data={data}
+                        {data && paginate && itemsPerPage && setPaginatedRows && <ClientSidePagination data={data}
                             itemsPerPage={itemsPerPage}
                             setCurrentData={setPaginatedRows} />}
                     </div>

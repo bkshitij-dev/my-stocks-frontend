@@ -16,6 +16,7 @@ import DownArrow from './components/icons/down-arrow';
 import AppLineChart from './components/app-line-chart';
 
 import stockMarketHistoryService from './services/stockMarketHistoryService';
+import TopMoversTable from './components/top-movers-table';
 
 export default function Home() {
 
@@ -33,6 +34,8 @@ export default function Home() {
   const [error, setError] = useState<AppError | null>(null);
 
   const headers: string[] = ["Scrip", "LTP", "Points +/-", "% +/-", "Open", "High", "Low"];
+  const topGainersHeaders: string[] = ["Scrip", "3-day % +", "Latest % +/-"];
+  const topLosersHeaders: string[] = ["Scrip", "3-day % -", "Latest % +/-"];
 
   const fetchData = async () => {
     try {
@@ -108,9 +111,7 @@ export default function Home() {
     if (marketData == null) {
       return '';
     }
-    return marketData.percentageChange > 0 ? 'text-green-500'
-      : marketData.percentageChange < 0 ? 'text-red-500'
-        : 'text-blue-500';
+    return marketData.pointsChange > 0 ? 'text-green-500' : marketData.pointsChange < 0 ? 'text-red-500' : 'text-blue-500';
   }
 
   return (
@@ -204,6 +205,15 @@ export default function Home() {
                   itemsPerPage={ITEMS_PER_PAGE}
                   setPaginatedRows={setPaginatedData}
                 />
+              </div>
+            </div>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+              <div className="flex-1">
+                <TopMoversTable title="Top Gainers in last 3 days" headers={topGainersHeaders} slug="gainers"/>
+              </div>
+              <div className="flex-1">
+                <TopMoversTable title="Top Losers in last 3 days" headers={topLosersHeaders} slug="losers"/>
               </div>
             </div>
           </>
