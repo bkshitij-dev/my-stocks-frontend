@@ -41,7 +41,7 @@ const ClientSidePagination = ({ data, itemsPerPage, setCurrentData }:
                 &lt;
             </button>
             
-            {(currentPage >= 3) &&
+            {(totalPages > 3) && (currentPage >= 3) &&
                 <>
                     <PaginationButton pageNumber={1} isCurrent={false} goToPageNumber={goToPageNumber} />
                     ...
@@ -66,7 +66,7 @@ const ClientSidePagination = ({ data, itemsPerPage, setCurrentData }:
             {(currentPage == 1) && (totalPages > 2) &&
                 <PaginationButton pageNumber={currentPage + 2} isCurrent={false} goToPageNumber={goToPageNumber} />
             }
-            {(currentPage <= (totalPages-2)) &&
+            {(totalPages > 3) && (currentPage <= (totalPages-2)) &&
                 <>
                     ...
                     <PaginationButton pageNumber={totalPages} isCurrent={false} goToPageNumber={goToPageNumber} />
