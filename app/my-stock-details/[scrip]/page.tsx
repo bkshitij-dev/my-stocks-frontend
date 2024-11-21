@@ -14,6 +14,7 @@ const MyStockDetails = () => {
     const router = useRouter();
 
     const [transactions, setTransactions] = useState<StockTransaction[] | null>(null);
+    const [name, setName] = useState(scrip);
     const [recentData, setRecentData] = useState<MarketRecentData[] | null>(null);
     const [minValue, setMinValue] = useState(Infinity);
     const [maxValue, setMaxValue] = useState(-Infinity);
@@ -39,10 +40,11 @@ const MyStockDetails = () => {
     const fetchRecentData = async () => {
         try {
             const apiResponse: ApiResponse = await stockHistoryService.getRecentDataForScrip(scrip);
-            const result: MarketRecentData[] = apiResponse.data;
-            setRecentData(result);
+            const result: StockRecentData = apiResponse.data;
+            setName(`${result.name} (${result.scrip})`);
+            setRecentData(result.recentData);
 
-            const { min, max } = result.reduce((acc, { index }) => {
+            const { min, max } = result.recentData.reduce((acc, { index }) => {
                 return {
                     min: Math.min(acc.min, index),
                     max: Math.max(acc.max, index)
@@ -72,7 +74,7 @@ const MyStockDetails = () => {
         <section className="mx-auto w-full max-w-7xl px-4 py-4">
             <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
                 <div>
-                    <h2 className="text-lg font-semibold">{scrip}</h2>
+                    <h2 className="text-lg font-semibold">{name}</h2>
                 </div>
                 <div>
                     <button
