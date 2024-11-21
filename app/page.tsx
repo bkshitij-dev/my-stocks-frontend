@@ -34,8 +34,6 @@ export default function Home() {
   const [error, setError] = useState<AppError | null>(null);
 
   const headers: string[] = ["Scrip", "LTP", "Points +/-", "% +/-", "Open", "High", "Low"];
-  const topGainersHeaders: string[] = ["Scrip", "3-day % +", "Latest % +/-"];
-  const topLosersHeaders: string[] = ["Scrip", "3-day % -", "Latest % +/-"];
 
   const fetchData = async () => {
     try {
@@ -139,7 +137,7 @@ export default function Home() {
           <button
             type="button"
             className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-          >
+            onClick={() => router.push("/my-stocks")}>
             Log In
           </button>
         </div>
@@ -210,10 +208,10 @@ export default function Home() {
 
             <div className="mt-10 flex flex-wrap gap-4">
               <div className="flex-1">
-                <TopMoversTable title="Top Gainers in last 3 days" headers={topGainersHeaders} slug="gainers"/>
+                <TopMoversTable title="Top Gainers" slug="gainers"/>
               </div>
               <div className="flex-1">
-                <TopMoversTable title="Top Losers in last 3 days" headers={topLosersHeaders} slug="losers"/>
+                <TopMoversTable title="Top Losers" slug="losers"/>
               </div>
             </div>
           </>
