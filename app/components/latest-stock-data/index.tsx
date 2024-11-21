@@ -18,7 +18,7 @@ const LatestStockData = ({stock}: {stock: StockData}) => {
   return (
     <tr key={stock.scrip}>
       <td className={tdCss}>
-        <div className={divCss}>
+        <div className={`underline ${divCss}`}>
           <Link href={`/stock-details/${stock.scrip}`}>{stock.scrip}</Link>
         </div>
       </td>
