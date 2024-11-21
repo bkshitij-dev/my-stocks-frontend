@@ -36,6 +36,10 @@ const StockSummary = (
                         <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
                             <div className="text-sm text-gray-900 ">{stock.wacc}</div>
                         </td>
+                        <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
+                            <div className={`text-sm text-gray-900 ${stock.ltp > stock.wacc 
+                                ? "text-green-500" : stock.ltp < stock.wacc ? "text-red-500" : "text-blue-500"}`}>{stock.ltp}</div>
+                        </td>
                         <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
                             <Link onClick={(e) =>  e.stopPropagation()} href={`/my-stock-details/${stock.scrip}`}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">

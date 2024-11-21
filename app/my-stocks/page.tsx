@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 import { useRouter } from 'next/navigation'
 
@@ -74,6 +75,33 @@ const MyStocks = () => {
 
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
+        <div className="inline-flex items-center space-x-2" onClick={() => router.push("/")}>
+          <span>
+            <Image
+              src="/stock.png"
+              width={30}
+              height={30}
+              alt="My Stocks"
+            />
+          </span>
+          <span className="font-bold">My Stocks</span>
+        </div>
+        <div className="hidden space-x-2 lg:block">
+          <button
+            type="button"
+            className="rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-black hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+          >
+            Sign Up
+          </button>
+          <button
+            type="button"
+            className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+            onClick={() => router.push("/my-stocks")}>
+            Log In
+          </button>
+        </div>
+      </div>
       <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
         <div>
           <h2 className="text-lg font-semibold">My Stocks</h2>
@@ -122,6 +150,9 @@ const MyStocks = () => {
                     </th>
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                       WACC
+                    </th>
+                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
+                      LTP
                     </th>
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-normal text-gray-700">
                     </th>
