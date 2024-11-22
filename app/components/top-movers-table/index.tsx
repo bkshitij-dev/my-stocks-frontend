@@ -46,7 +46,6 @@ const TopMoversTable = ({ title, slug }: { title: string, slug: string }) => {
 
     return (
         <div>
-            {/* <h1 className="text-md text-center font-semibold">{days == 1 ? 'Latest' : ''} {title} {days == 1 ? '' : `in the last ${days} days`}</h1> */}
             <h1 className="text-md text-center font-semibold">
                 {days === 1 ? 'Latest' : ''} {title}{' '}
                 {days === 1 ? '' : `in the last ${days} days`}
