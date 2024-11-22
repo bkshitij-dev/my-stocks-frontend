@@ -15,6 +15,7 @@ const StockSearch = () => {
     });
     const [stocks, setStocks] = useState<StockData[]>([]);
     const [sectors, setSectors] = useState<Sector[]>([]);
+    const [selectedSector, setSelectedSector] = useState("");
 
 
     const fetchSectors = async () => {
@@ -38,6 +39,11 @@ const StockSearch = () => {
         }));
       }
 
+    const handleSectorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedSector(e.target.value);
+        handleChange(e);
+    }
+
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
         try {
@@ -50,8 +56,6 @@ const StockSearch = () => {
       };
     
     const getTextColorByPointsChange = (stock: StockData) => {
-        console.log("test >>>>");
-        console.log(stock);
         if (stock == null) {
             return '';
         }
@@ -73,13 +77,25 @@ const StockSearch = () => {
             />
           </div>
           <div className="flex-1">
-            <label htmlFor="low" className="block text-sm font-medium text-gray-700 mb-1">High</label>
+            <label htmlFor="high" className="block text-sm font-medium text-gray-700 mb-1">High</label>
             <input
               className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="number"
               name="high"
               onChange={handleChange}
             />
+          </div>
+
+          <div className="flex-1">
+            <label htmlFor="sector" className="block text-sm font-medium text-gray-700 mb-1">Sector</label>
+            <select name="sector" value={selectedSector} onChange={handleSectorChange}>
+                <option value="" disabled>Select sector</option>
+                {sectors.map((sector) => (
+                <option key={sector.id} value={sector.name}>
+                    {sector.name}
+                </option>
+                ))}
+            </select>
           </div>
         </div>
         <div className="flex justify-end">
