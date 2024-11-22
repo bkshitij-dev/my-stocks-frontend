@@ -9,7 +9,7 @@ const stockTransactionService = {
         return response.json();
     },
     postTransaction: async (formData: StockTransaction) => {
-        const response = await fetch("http://localhost:8080/api/v1/stock-transactions", {
+        const response = await fetch(API_ENDPOINTS.STOCK_TRANSACTION, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
